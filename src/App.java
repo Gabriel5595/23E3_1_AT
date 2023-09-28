@@ -19,7 +19,7 @@ public class App {
         //Listas foram criadas para as classes Imovel, Cliente e ContratoAluguel. (Questão13)
         List<Imovel> listaImoveis = new ArrayList<>();
         List<Cliente> listaClientes = new ArrayList<>();
-        List<ContratoAluguel> listaContratos = new ArrayList<>();
+        List<ContratoAluguel> listaContratosCompleta = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -35,46 +35,48 @@ public class App {
             System.out.print("Escolha uma opção: ");
 
             int escolha = scanner.nextInt();
+            scanner.nextLine();
             
             switch (escolha) {
                 //Opção para encerrar o programa. (Questão14)
                 case 1:
-                    System.out.println("Encerrando o programa.");
+                    System.out.println("\nEncerrando o programa.");
                     return;
                 
                 //Opção para adicionar cliente (Questão15)
                 case 2:
-                    System.out.println("O cliente é Pessoa Física ou Pessoa Jurídica?");
+                    System.out.println("\nO cliente é Pessoa Física ou Pessoa Jurídica?");
                     System.out.println("1. Pessoa Física.");
                     System.out.println("2. Pessoa Jurídica.");
                     int FisOuJuri = scanner.nextInt();
+                    scanner.nextLine();
 
                     //Seleciona se o cliente é Pessoa Física ou Jurídica e cria a classe de acordo. (Questão15)
                     if(FisOuJuri == 1) {
-                        System.out.println("Digite o nome do cliente: ");
-                        String nomeFis = scanner.next();
+                        System.out.println("Digite o nome do cliente COMPLETO: ");
+                        String nomeFis = scanner.nextLine();
                         System.out.println("Digite o telefone do cliente: ");
                         String telefoneFis = scanner.next();
                         System.out.println("Digite o e-mail do cliente: ");
                         String emailFis = scanner.next();
                         System.out.println("Digite o CPF do cliente (Utilize o formato 00000000000, sem pontos ou traços): ");
                         String cpf = scanner.next();
-                        Cliente clienteFisico = new Fisica(nomeFis, telefoneFis, emailFis, listaContratos, cpf);
+                        Cliente clienteFisico = new Fisica(nomeFis, telefoneFis, emailFis, cpf);
                         listaClientes.add(clienteFisico);
-                        System.out.println("Cliente adicionado com sucesso!");
+                        System.out.println("\nCliente adicionado com sucesso!");
                         break;
                     } else if (FisOuJuri == 2) {
-                        System.out.println("Digite o nome do cliente: ");
-                        String nomeJuri = scanner.next();
+                        System.out.println("Digite o nome do cliente COMPLETO: ");
+                        String nomeJuri = scanner.nextLine();
                         System.out.println("Digite o telefone do cliente: ");
                         String telefoneJuri = scanner.next();
                         System.out.println("Digite o e-mail do cliente");
                         String emailJuri = scanner.next();
                         System.out.println("Digite o CNPJ (Utilize o formato 00000000000000, sem pontos ou traços): ");
                         String cnpj = scanner.next();
-                        Cliente clienteJuridico = new Juridica(nomeJuri, telefoneJuri, emailJuri, listaContratos, cnpj);
+                        Cliente clienteJuridico = new Juridica(nomeJuri, telefoneJuri, emailJuri, cnpj);
                         listaClientes.add(clienteJuridico);
-                        System.out.println("Cliente adicionado com sucesso!");
+                        System.out.println("\nCliente adicionado com sucesso!");
                         break;
                     } else {
                         System.out.println("Opção inválida. Tente novamente.");
@@ -83,22 +85,23 @@ public class App {
 
                 //Opção para adicionar imóvel.(Questão16)
                 case 3:
-                    System.out.println("Digite o registro do imóvel: ");
-                    String registro = scanner.next();
+                    System.out.println("\nDigite o registro do imóvel: ");
+                    String registro = scanner.nextLine();
                     System.out.println("Digite o nome do imóvel: ");
-                    String nome = scanner.next();
+                    String nome = scanner.nextLine();
                     
                     System.out.println("Digite o logradouro do endereço: ");
-                    String logradouro = scanner.next();
+                    String logradouro = scanner.nextLine();
                     System.out.println("Digite o tipo do logradouro do endereço: ");
                     String tipoLogradouro = scanner.next();
                     System.out.println("Digite o número do endereço: ");
                     String numero = scanner.next();
                     System.out.println("Digite o complemento do endereço (Caso não tenha, escreva 'Sem complemento'): ");
-                    String complemento = scanner.next();
+                    String complemento = scanner.nextLine();
+                    scanner.nextLine();
                     System.out.println("Digite a cidade do endereço: ");
-                    String cidade = scanner.next();
-                    System.out.println("Digite o Estado do endereço: ");
+                    String cidade = scanner.nextLine();
+                    System.out.println("Digite o Estado do endereço (UF): ");
                     String estado = scanner.next();
                     System.out.println("Digite o CEP do endereço: ");
                     String cep = scanner.next();
@@ -109,61 +112,69 @@ public class App {
                     float valorAluguel = scanner.nextFloat();
                     
                     Endereco endereco = new Endereco(logradouro, tipoLogradouro, numero, complemento, cidade, estado, cep);
-                    Imovel imovel = new Imovel(registro, nome, endereco, tipo, valorAluguel, listaContratos);
+                    Imovel imovelNovo = new Imovel(registro, nome, endereco, tipo, valorAluguel);
                     
-                    listaImoveis.add(imovel);
+                    listaImoveis.add(imovelNovo);
 
-                    System.out.println("Imóvel adicionado com sucesso!");
+                    System.out.println("\nImóvel adicionado com sucesso!");
                         
                     break;
                 
                 //Opção para adicionar um contrato de aluguel. (Questão17)
                 case 4:
-                    System.out.println("É necessário que já haja um imóvel e cliente cadastrados para que o contrato seja criado.");
+                    System.out.println("\nÉ necessário que já haja um imóvel e cliente cadastrados para que o contrato seja criado.");
                     
-                    //Pesquisa de Imóvel na lista.
+                    //Pesquisa cliente na lista
                     System.out.println("Digite o CPF ou CNPJ do cliente já cadastrado: ");
                     String clienteInformado = scanner.next();
 
-                    for(Cliente clienteSelecionado : listaClientes) {
-                        if (((clienteSelecionado instanceof Fisica && ((Fisica) clienteSelecionado).getCpf().equals(clienteInformado)) ||
-                        (clienteSelecionado instanceof Juridica && ((Juridica) clienteSelecionado).getCnpj().equals(clienteInformado)))) {
+                    Cliente clienteSelecionado = null;
+                    for(Cliente cliente : listaClientes) {
+                        if (((cliente instanceof Fisica && ((Fisica) cliente).getCpf().equals(clienteInformado)) || (cliente instanceof Juridica && ((Juridica) cliente).getCnpj().equals(clienteInformado)))) {
+                            clienteSelecionado = cliente;
                             System.out.println("O cliente com ID " + clienteInformado + " foi encontrado.");
-                            System.out.println("Digite o registro do imóvel já cadastrado: ");
-                            String imovelInformado = scanner.next();
-                            for (Imovel imovelSelecionado : listaImoveis) {
-                                if (imovelSelecionado.getRegistro().equals(imovelInformado)){
-                                    System.out.println("O imóvel com registro " + imovelInformado + " foi encontrado.");
-                                    
-                                    System.out.println("Digite a data de início do contrato (formato DD/MM/YYYY): ");
-                                    String dataInicioStr = scanner.next();
-                                    
-                                    System.out.println("Digite a data de fim do contrato (formato DD/MM/YYYY): ");
-                                    String dataTerminoStr = scanner.next();
-                                    
-                                    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                                    LocalDate dataInicio = LocalDate.parse(dataInicioStr, formatador);
-                                    LocalDate dataTermino = LocalDate.parse(dataTerminoStr, formatador);
-                                    
-                                    ContratoAluguel contratoAluguel = new ContratoAluguel(imovelSelecionado, clienteSelecionado, dataInicio, dataTermino);
-                                    listaContratos.add(contratoAluguel);
-                                    System.out.println("Contrato adicionado com sucesso!");
-                                } else {
-                                    System.out.println("O imóvel com registro " + imovelInformado + "não foi encontrado.");
-                                    break;
-                                }
-                            }
-                            break;
-                        } else {
-                            System.out.println("O cliente com ID " + clienteInformado + "não foi encontrado.");
-                            break;
                         }
                     }
+                    if (clienteSelecionado == null) {
+                        System.out.println("\nO cliente com ID " + clienteInformado + " não foi encontrado.");
+                        break;
+                    }
+
+                    //Pesquisa imovel na lista
+                    System.out.println("Digite o registro do imóvel já cadastrado: ");
+                    String imovelInformado = scanner.next();
+
+                    Imovel imovelSelecionado = null;
+                    for (Imovel imovel : listaImoveis) {
+                        if (imovel.getRegistro().equals(imovelInformado)) {
+                            imovelSelecionado = imovel;
+                        }
+                    }
+                    if (imovelSelecionado ==null) {
+                        System.out.println("\nO imóvel com registro " + imovelInformado + " não foi encontrado.");
+                        break;
+                    }
+
+                    System.out.println("Digite a data de início do contrato (formato DD/MM/YYYY): ");
+                    String dataInicioStr = scanner.next();
+                    
+                    System.out.println("Digite a data de fim do contrato (formato DD/MM/YYYY): ");
+                    String dataTerminoStr = scanner.next();
+                    
+                    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate dataInicio = LocalDate.parse(dataInicioStr, formatador);
+                    LocalDate dataTermino = LocalDate.parse(dataTerminoStr, formatador);
+                    
+                    ContratoAluguel contratoAluguel = new ContratoAluguel(imovelSelecionado, clienteSelecionado, dataInicio, dataTermino);
+                    listaContratosCompleta.add(contratoAluguel);
+                    clienteSelecionado.getListaContratos().add(contratoAluguel);
+                    imovelSelecionado.getListaContratos().add(contratoAluguel);
+                    System.out.println("\nContrato adicionado com sucesso!");
                     break;
 
                 //Apresentar contratos de um cliente. (Questão18)
                 case 5:
-                    System.out.println("Digite o CPF ou CNPJ do cliente: ");
+                    System.out.println("\nDigite o CPF ou CNPJ do cliente: ");
                     String cpfOuCnpj = scanner.next();
                     System.out.println("Contratos para CPF/CNPJ " + cpfOuCnpj + ":");
 
@@ -171,30 +182,29 @@ public class App {
 
                     for (Cliente cliente : listaClientes) {
                         if ((cliente instanceof Fisica && ((Fisica) cliente).getCpf().equals(cpfOuCnpj))) {
-                            valorTotal += ((Fisica) cliente).calcularValorTotalContratos(cpfOuCnpj, listaClientes,listaContratos);
-                            System.out.println(valorTotal);
+                            valorTotal = cliente.calcularValorTotalContratos();
                         } else if ((cliente instanceof Juridica && ((Juridica) cliente).getCnpj().equals(cpfOuCnpj))) {
-                            valorTotal += ((Juridica) cliente).calcularValorTotalContratos(cpfOuCnpj, listaClientes,listaContratos);
+                            valorTotal = cliente.calcularValorTotalContratos();
                         }
                     }
 
-                    for (ContratoAluguel contrato : listaContratos) {
+                    for (ContratoAluguel contrato : listaContratosCompleta) {
                         Cliente cliente = contrato.cliente;
                         if((cliente instanceof Fisica && ((Fisica) cliente).getCpf().equals(cpfOuCnpj)) ||
                         (cliente instanceof Juridica && ((Juridica) cliente).getCnpj().equals(cpfOuCnpj))) {
-                            System.out.print(contrato.imovel.getRegistro() + ", " + contrato.imovel.getNome() + ", " + contrato.dataInicio + ", " + contrato.dataTermino + ", " + valorTotal);
+                            System.out.print(contrato.imovel.getRegistro() + ", " + contrato.imovel.getNome() + ", " + contrato.dataInicio + ", " + contrato.dataTermino + ", " + valorTotal + "\n");
                         }
                     }
                     break;
                 
                 //Apresentar contratos de imovel. (Questão19)
                 case 6:
-                    System.out.println("Digite o registro do imóvel: ");
+                    System.out.println("\nDigite o registro do imóvel: ");
                     String registroPesquisado2 = scanner.next();
 
-                    System.out.println("Contratos para CPF/CNPJ " + registroPesquisado2 + ":");
-                    for(ContratoAluguel contrato : listaContratos) {
-                        if(contrato.imovel.getRegistro().equals(registroPesquisado2)) {
+                    System.out.println("Contratos registro do imóvel " + registroPesquisado2 + ":");
+                    for(ContratoAluguel contrato : listaContratosCompleta) {
+                        if(contrato.imovel.getRegistro().equals(registroPesquisado2) && !contrato.contratoVencido()) {
                             System.out.println(contrato.toString());
                         }
                     }
@@ -203,18 +213,18 @@ public class App {
                 //Exportar arquivo
                 case 7:
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter("contratos.csv"))) {
-                        for (ContratoAluguel contrato : listaContratos) {
+                        for (ContratoAluguel contrato : listaContratosCompleta) {
                             writer.write(contrato.toString());
                             writer.newLine();
                         }
-                        System.out.println("Contratos exportados para o arquivo contratos.csv.");
+                        System.out.println("\nContratos exportados para o arquivo contratos.csv.");
                     } catch (IOException e) {
-                        System.err.println("Erro ao exportar contratos para CSV: " + e.getMessage());
+                        System.err.println("\nErro ao exportar contratos para CSV: " + e.getMessage());
                     }
                     break;
                 
                 case 8:
-                    System.out.println(listaContratos.toString());
+                    System.out.println(listaContratosCompleta.toString());
                     break;
                 
                 case 9:
@@ -225,6 +235,8 @@ public class App {
                     System.out.println(listaImoveis.toString());
                     break;
             }
+
+            scanner.close();
         }
     }
 }

@@ -37,7 +37,7 @@ public class ContratoAluguel {
     //Metodos calcularValorContrato() e contratoVencido() criados. (Questão8)
     public float calcularValorContrato() {
         Period periodo = Period.between(dataInicio, dataTermino);
-        return imovel.valorAluguel * periodo.toTotalMonths();
+        return imovel.getValorAluguel() * periodo.toTotalMonths();
     }
 
     public boolean contratoVencido() {
@@ -49,14 +49,14 @@ public class ContratoAluguel {
     public String toString() {
         return imovel.getRegistro() + ", " + 
         imovel.getNome() + ", " + 
-        imovel.endereco.getLogradouro() + ", " + 
-        imovel.endereco.getTipoLogradouro() + ", " + 
-        imovel.endereco.getNumero() + ", " + 
-        imovel.endereco.getComplemento() + ", " + 
-        imovel.endereco.getCidade() + ", " +
-        imovel.endereco.getEstado() + ", " +
-        imovel.endereco.getCep() + ", " +  
-        imovel.valorAluguel + ", " + 
+        imovel.getEndereco().getLogradouro() + ", " + 
+        imovel.getEndereco().getTipoLogradouro() + ", " + 
+        imovel.getEndereco().getNumero() + ", " + 
+        imovel.getEndereco().getComplemento() + ", " + 
+        imovel.getEndereco().getCidade() + ", " +
+        imovel.getEndereco().getEstado() + ", " +
+        imovel.getEndereco().getCep() + ", " +  
+        imovel.getValorAluguel() + ", " + 
         cliente.getNome() + ", " + 
         cliente.getTelefone() + ", " + 
         dataInicio + ", " + 

@@ -1,5 +1,5 @@
 package Recursos;
-import java.util.List;
+
 import Excecoes.NaoNuloException;
 import Excecoes.NaoVazioException;
 
@@ -24,35 +24,8 @@ public class Fisica extends Cliente{
 
     //Construtor
     //Construtor apresentando também atributos herdados da classe Cliente (Questão6)
-    public Fisica(String nome, String telefone, String email, List<ContratoAluguel> listaContratos, String cpf) throws NaoNuloException, NaoVazioException {
-        super(nome, telefone, email, listaContratos);
+    public Fisica(String nome, String telefone, String email, String cpf) throws NaoNuloException, NaoVazioException {
+        super(nome, telefone, email);
         setCpf(cpf);
-    }
-
-    
-    @Override
-    public float calcularValorTotalContratos(String cpfSelecionado, List<Cliente> listaClientes, List<ContratoAluguel> listaContratos) {
-        float valorTotal = 0;
-        int contratosTotais = 0;
-
-        for(ContratoAluguel contrato : listaContratos) {
-            
-            if (((Fisica) contrato.cliente).getCpf().equals(cpfSelecionado)) {
-                valorTotal += contrato.imovel.valorAluguel;
-                contratosTotais ++;
-            } else {
-                System.out.println("Nenhum contrato encontrado para o CPF " + cpfSelecionado);
-            }
-            
-        }
-
-        
-        if (contratosTotais >= 5) {
-            return valorTotal * 0.9f;
-        } else if (contratosTotais >= 3 && contratosTotais < 5) {
-            return valorTotal * 0.95f;
-        } else {
-            return valorTotal;
-        }
     }
 }

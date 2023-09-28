@@ -1,5 +1,5 @@
 package Recursos;
-import java.util.List;
+
 import Excecoes.NaoNuloException;
 import Excecoes.NaoVazioException;
 
@@ -24,34 +24,8 @@ public class Juridica extends Cliente{
 
     //Construtor
     //Construtor apresentando também atributos herdados da classe Cliente (Questão6)
-    public Juridica(String nome, String telefone, String email, List<ContratoAluguel> listaContratos, String cnpj) throws NaoNuloException, NaoVazioException {
-        super(nome, telefone, email, listaContratos);
+    public Juridica(String nome, String telefone, String email, String cnpj) throws NaoNuloException, NaoVazioException {
+        super(nome, telefone, email);
         setCpf(cnpj);
-    }
-
-    @Override
-    public float calcularValorTotalContratos(String cnpjSelecionado, List<Cliente> listaClientes, List<ContratoAluguel> listaContratos) {
-        float valorTotal = 0;
-        int contratosTotais = 0;
-
-        for(ContratoAluguel contrato : listaContratos) {
-            
-            if (((Fisica) contrato.cliente).getCpf().equals(cnpjSelecionado)) {
-                valorTotal += contrato.imovel.valorAluguel;
-                contratosTotais ++;
-            } else {
-                System.out.println("Nenhum contrato encontrado para o CNPJ " + cnpjSelecionado);
-            }
-            
-        }
-
-        
-        if (contratosTotais >= 5) {
-            return valorTotal * 0.9f;
-        } else if (contratosTotais >= 3 && contratosTotais < 5) {
-            return valorTotal * 0.95f;
-        } else {
-            return valorTotal;
-        }
     }
 }

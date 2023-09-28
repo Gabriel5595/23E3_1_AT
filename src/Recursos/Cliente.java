@@ -1,4 +1,5 @@
 package Recursos;
+import java.util.ArrayList;
 import java.util.List;
 import Excecoes.NaoNuloException;
 import Excecoes.NaoVazioException;
@@ -10,7 +11,7 @@ abstract public class Cliente implements Contabil {
     private String nome;
     private String telefone;
     private String email;
-    private List<ContratoAluguel> listaContratos;
+    protected List<ContratoAluguel> listaContratos;
 
     //Getters e Setters
     //Validações de exceções são adicionadas a nome, telefone e email. (Questão4)
@@ -49,50 +50,48 @@ abstract public class Cliente implements Contabil {
         }
         this.email = email;
     }
-    
-    public Cliente(String nome, String telefone, String email, List<ContratoAluguel> listaContratos) throws NaoNuloException, NaoVazioException {
-        setEmail(email);
-        setNome(nome);
-        setTelefone(telefone);
+
+    public List<ContratoAluguel> getListaContratos() {
+        return listaContratos;
+    }
+    public void setListaContratos(List<ContratoAluguel> listaContratos) {
         this.listaContratos = listaContratos;
     }
 
-    public abstract float calcularValorTotalContratos(String IDselecionado, List<Cliente> listaClientes, List<ContratoAluguel> listaContratos);
-    // {
-    //     float valorTotal = 0;
-    //     int contratosTotais = 0;
+    public Cliente(String nome, String telefone, String email) throws NaoNuloException, NaoVazioException {
+        setEmail(email);
+        setNome(nome);
+        setTelefone(telefone);
+        listaContratos = new ArrayList<>();
+    }
 
-    //     for(Cliente cliente : listaClientes) {
-            
-    //         if (((cliente instanceof Fisica && ((Fisica) cliente).getCpf().equals(IDselecionado)) ||
-    //         (cliente instanceof Juridica && ((Juridica) cliente).getCnpj().equals(IDselecionado)))) {
-                
-    //             System.out.println("O cliente com ID " + IDselecionado + " foi encontrado.");
-                
-    //             for(ContratoAluguel contrato : listaContratos) {
-    //                 valorTotal =+ contrato.imovel.valorAluguel;
-    //                 contratosTotais ++;
-    //             }
+    public float calcularValorTotalContratos() {
+        float valorTotal = 0;
+        int contratosTotais = 0;
 
-    //         } else {
-    //             System.out.println("O cliente com ID " + IDselecionado + " foi encontrado.");
-    //         }
-    //     }
+        for(ContratoAluguel contrato : listaContratos) {
+            if (!contrato.contratoVencido()){
+                valorTotal += contrato.calcularValorContrato();
+                contratosTotais ++;
+            }
+        }
+
         
-    //     if (contratosTotais >= 5) {
-    //         return valorTotal * 0.9f;
-    //     } else if (contratosTotais >= 3 && contratosTotais < 5) {
-    //         return valorTotal * 0.5f;
-    //     } else {
-    //         return valorTotal;
-    //     }
-
-    // }
+        if (contratosTotais >= 5) {
+            return valorTotal * 0.9f;
+        } else if (contratosTotais >= 3 && contratosTotais < 5) {
+            return valorTotal * 0.95f;
+        } else {
+            return valorTotal;
+        }
+    }
     
     @Override
     public String toString() {
-        return "Cliente [nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", listaContratos="
-                + listaContratos + "]";
+        return "\nCliente [nome=" + nome + 
+                ", telefone=" + telefone + 
+                ", email=" + email + 
+                ", listaContratos=" + listaContratos + "]";
     }
 
     
